@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mon App</title>
+    <script>
+async function sendName() {
+    const name = document.getElementById('name').value;
+    try {
+        const response = await fetch('http://127.0.0.1:8000/greeting/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({name: name})
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            const errorMessage = errorData.detail[0].msg;
+            // Lance une erreur avec un message personnalisé
+            throw new Error(`${errorMessage}`);
+        }
+        const data = await response.json();
+        document.getElementById('message').innerText = data.message;
+    } catch (error) {
+        // Affiche uniquement le message d'erreur, sans "Error:"
+        document.getElementById('message').innerText = error.message;
+    }
+}
+    </script>
+</head>
+<body>
+    <input type="text" id="name" placeholder="Entrez votre nom">
+    <button onclick="sendName()">Envoyer</button>
+    <h1 id="message">Chargement...</h1>
+</body>
+</html>

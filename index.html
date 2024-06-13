@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mon App</title>
+    <script>
+    async function fetchMessage() {
+        const response = await fetch('http://127.0.0.1:8000/');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        document.getElementById('message').innerText = data.message;
+    }
+
+    fetchMessage().catch(function(error) {
+        console.log('Error:', error);
+        document.getElementById('message').innerText = 'Une erreur s\'est produite.';
+    });
+</script>
+</head>
+<body onload="fetchMessage()">
+    <h1 id="message">Chargement...</h1>
+</body>
+</html>
